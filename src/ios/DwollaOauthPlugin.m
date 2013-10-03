@@ -31,8 +31,8 @@
     
     NSArray *scopes = [[NSArray alloc] initWithObjects:@"send", @"balance", @"accountinfofull", @"contacts", @"funding",  @"request", @"transactions", nil];
     DwollaOAuth2Client *client = [[DwollaOAuth2Client alloc] initWithFrame:CGRectMake(0, 0, 320, 460)
-                                                                       key:@"0dJpzJfHBASUd29ZDZT7kwb+6FG5TScnjuiy/u/SYVTYf2TFUQ"
-                                                                    secret:@"gdEapqeo3pPL/XOQIiRfklbm1DFTPwu3is3Ol67foGi404NVbl"
+                                                                       key:@"yourkey"
+                                                                    secret:@"yoursecret"
                                                                   redirect:@"https://www.dwolla.com"
                                                                   response:@"code"
                                                                     scopes:scopes

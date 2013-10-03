@@ -12,11 +12,11 @@ var DwollaOauth = function() {
 };
 
 // Call this to register for push notifications and retreive a deviceToken
-DwollaOauth.prototype.compose = function(options, success, error) {
+DwollaOauth.prototype.login = function(options, success, error) {
   if (arguments.length == 2) {
     error = function(err) { console.log(err); };
   }
-  cordova.exec(success, error, "DwollaOauth", "login", options ? [options] : []);
+  cordova.exec(success, error, "DwollaOauthPlugin", "login", options ? [options] : []);
 };
 
 var dwollaOauth = new DwollaOauth();
