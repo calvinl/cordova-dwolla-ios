@@ -13,7 +13,7 @@
 
 @implementation DwollaOauthPlugin
 
-@synthesize callbackIds = _callbackIds;
+@synthesize callbackIds = _callbackIds, oAuthTokenRepository;
 
 - (NSMutableDictionary*)callbackIds {
 	if(_callbackIds == nil) {
@@ -39,15 +39,33 @@
                                                                       view:self.viewController.view
                                                                   reciever:self];
     [client login];
-   
+
 }
 
 -(void)successfulLogin
 {
-    APIViewController* actions = [[APIViewController alloc] init];
-    [actions setModalPresentationStyle: UIModalPresentationFullScreen];
-    [self.viewController presentViewController:actions animated:YES completion:nil];
+    oAuthTokenRepository = [[OAuthTokenRepository alloc] init];
 
+    NSString *oAuthToken = [oAuthTokenRepository getAccessToken];
+    if (oAuthToken != (id)[NSNull null] && oAuthToken.length != 0 ) {
+
+        NSLog(@"oauth token: %@", [oAuthTokenRepository getAccessToken]);
+
+        NSMutableDictionary *results = [NSMutableDictionary dictionary];
+        [results setObject: oAuthToken forKey: @"token"];
+
+        CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:results];
+        [self writeJavascript:[pluginResult toSuccessCallbackString:[self.callbackIds valueForKey:@"login"]]];
+
+    } else {
+
+        NSMutableDictionary *results = [NSMutableDictionary dictionary];
+        [results setValue:[NSString stringWithFormat:@"%@", @"Error retrieving oAuthToken."] forKey:@"error"];
+
+        CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:results];
+        [self writeJavascript:[pluginResult toErrorCallbackString:[self.callbackIds valueForKey:@"login"]]];
+
+    }
 }
 
 -(void)failedLogin:(NSArray*)errors

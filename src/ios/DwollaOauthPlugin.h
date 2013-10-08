@@ -10,19 +10,17 @@
 #import "DwollaOAuth2Client.h"
 #import "IDwollaMessages.h"
 #import "APIViewController.h"
+#import "OAuthTokenRepository.h"
 
 @interface DwollaOauthPlugin : CDVPlugin <IDwollaMessages> {
-
   NSMutableDictionary* callbackIds;
-
 }
 
+@property (retain) OAuthTokenRepository *oAuthTokenRepository;
 @property (nonatomic, retain) NSMutableDictionary* callbackIds;
 
-- (void)login:(CDVInvokedUrlCommand*)command;
-
+-(void)login:(CDVInvokedUrlCommand*)command;
 -(void)successfulLogin;
-
 -(void)failedLogin:(NSArray*)errors;
 
 @end
